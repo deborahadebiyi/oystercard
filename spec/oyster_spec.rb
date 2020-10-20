@@ -8,7 +8,7 @@ describe Oystercard do
   end
 
   it "has a balance that is equal to 0" do
-    expect(subject.balance).to eq (0)
+    expect(subject.balance).to eq(0)
   end
 
   it "#top_up" do
@@ -23,5 +23,11 @@ describe Oystercard do
     oystercard = Oystercard.new
     oystercard.top_up(5)
     expect(subject.top_up(5)).to eq(5)
+  end
+
+  it "top_up exceeds max balance" do
+    oystercard = Oystercard.new
+    oystercard.top_up(80)
+    expect(oystercard.top_up(11)).to eq('Top up limit reached')
   end
 end

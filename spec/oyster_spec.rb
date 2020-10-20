@@ -30,4 +30,10 @@ describe Oystercard do
     oystercard.top_up(80)
     expect(oystercard.top_up(11)).to eq('Top up limit reached')
   end
+
+  it "deducts fare from current balance" do
+    oystercard = Oystercard.new
+    oystercard.top_up(40)
+    expect(oystercard.deduct(20)).to eq(20)
+  end
 end

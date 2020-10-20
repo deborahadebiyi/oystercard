@@ -8,6 +8,7 @@ class Oystercard
     @balance = 0
     @amount
     @max_balance = MAX_BALANCE
+    @fare = 5
   end
 
   def top_up(amount)
@@ -19,4 +20,7 @@ class Oystercard
     end
   end
 
+def deduct(fare)
+  @balance -= fare
+end
 end

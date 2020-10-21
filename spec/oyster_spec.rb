@@ -93,9 +93,22 @@ let(:exit_station){double :exit_station}
 end
 
 
-#
-#
-#
-# describe Barrier do
-#
-# end
+
+describe Station do
+
+
+subject{ Station.new(testname, testzone)}
+
+let(:testname){double :name}
+let(:testzone){double :zone}
+
+it "exposes a name variable" do
+  expect(subject.name).to eq testname
+end
+
+it "exposes a zone variable" do
+  expect(subject.zone).to eq testzone
+end
+
+
+end

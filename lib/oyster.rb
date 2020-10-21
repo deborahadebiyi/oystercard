@@ -1,24 +1,20 @@
 class Oystercard
 
   MAX_BALANCE = 90
+  MINIMUM_FARE = 1
 
   attr_reader :balance, :current_amount, :travelling
 
   def initialize
     @balance = 0
     @amount
-    @max_balance = MAX_BALANCE
     @fare = 5
     @travelling = false
   end
 
   def top_up(amount)
-    current_amount = @balance += amount
-    if @balance > @max_balance
-      return "Top up limit reached"
-    else
-      return current_amount
-    end
+    fail 'Top up limit reached' if @balance + amount > MAX_BALANCE
+    @balance += amount
   end
 
 def deduct(fare)
@@ -26,6 +22,7 @@ def deduct(fare)
 end
 
 def touch_in
+  fail 'Insufficient funds' if @balance < MINIMUM_FARE
   @travelling = true
 end
 

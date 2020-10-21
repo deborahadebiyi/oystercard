@@ -27,8 +27,8 @@ describe Oystercard do
 
   it "top_up exceeds max balance" do
     #oystercard = Oystercard.new
-    subject.top_up(80)
-    expect(subject.top_up(11)).to eq('Top up limit reached')
+    #subject.top_up(Oystercard::MAX_BALANCE)
+    expect{subject.top_up(Oystercard::MAX_BALANCE + 1)}.to raise_error 'Top up limit reached'
   end
 
   it "deducts fare from current balance" do
@@ -41,6 +41,7 @@ describe Oystercard do
   it "lets oystercard tap in" do
     #barrier = Barrier.new
     #oystercard = Oystercard.new
+    subject.top_up(10)
     expect(subject).to respond_to(:touch_in)
     subject.touch_in
     expect(subject.in_journey?).to eq(true)
@@ -49,6 +50,7 @@ describe Oystercard do
   it "lets oystercard tap out" do
     #barrier = Barrier.new
     #oystercard = Oystercard.new
+    subject.top_up(10)
     expect(subject).to respond_to(:touch_out)
     subject.touch_in
     subject.touch_out
@@ -60,6 +62,9 @@ describe Oystercard do
     expect(subject.in_journey?).to eq(false)
   end
 
+  it "checks the user has more than the minimum balance to touch in" do
+    expect{subject.touch_in}.to raise_error 'Insufficient funds'
+  end
 end
 
 

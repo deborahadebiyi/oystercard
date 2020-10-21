@@ -31,11 +31,12 @@ describe Oystercard do
     expect{subject.top_up(Oystercard::MAX_BALANCE + 1)}.to raise_error 'Top up limit reached'
   end
 
-  it "deducts fare from current balance" do
-    #oystercard = Oystercard.new
-    subject.top_up(40)
-    expect(subject.deduct(20)).to eq(20)
-  end
+  # it "deducts fare from current balance" do
+  #   #oystercard = Oystercard.new
+  #   subject.top_up(40)
+  #   expect(subject.deduct(20)).to eq(20)
+  # end
+  #  can't test private methods
 
 
   it "lets oystercard tap in" do
@@ -64,6 +65,10 @@ describe Oystercard do
 
   it "checks the user has more than the minimum balance to touch in" do
     expect{subject.touch_in}.to raise_error 'Insufficient funds'
+  end
+
+  it " checks if user is charged minimum fare when touching out" do
+    expect {subject.touch_out}.to change{subject.balance}.by(-Oystercard::MINIMUM_FARE)
   end
 end
 

@@ -3,6 +3,7 @@ require 'oyster'
 describe Oystercard do
 
 let(:station){double :station}
+let(:exit_station){double :exit_station}
 
   it "#balance" do
     oystercard = Oystercard.new
@@ -56,7 +57,7 @@ let(:station){double :station}
     subject.top_up(10)
     expect(subject).to respond_to(:touch_out)
     subject.touch_in(station)
-    subject.touch_out
+    subject.touch_out(exit_station)
     expect(subject.in_journey?).to eq(false)
 
   end
@@ -70,7 +71,7 @@ let(:station){double :station}
   end
 
   it " checks if user is charged minimum fare when touching out" do
-    expect {subject.touch_out}.to change{subject.balance}.by(-Oystercard::MINIMUM_FARE)
+    expect {subject.touch_out(exit_station)}.to change{subject.balance}.by(-Oystercard::MINIMUM_FARE)
   end
 
   it "stores entry station " do
@@ -78,12 +79,23 @@ let(:station){double :station}
     subject.touch_in(station)
     expect(subject.entry_station).to eq station
   end
+
+  it "checks station log is empty by default" do
+    expect(subject.station_log).to eq []
+  end
+
+  it "checks that touching in and out creates one journey" do
+    subject.top_up(10)
+    subject.touch_in(station)
+    subject.touch_out(exit_station)
+    expect(subject.station_log).to eq [{boarding: station, departure: exit_station}]
+  end
 end
 
 
-
-
-
-describe Barrier do
-
-end
+#
+#
+#
+# describe Barrier do
+#
+# end

@@ -20,20 +20,52 @@ describe Oystercard do
   end
 
   it "updates the amount" do
-    oystercard = Oystercard.new
-    oystercard.top_up(5)
+    #oystercard = Oystercard.new
+    #oystercard.top_up(5)
     expect(subject.top_up(5)).to eq(5)
   end
 
   it "top_up exceeds max balance" do
-    oystercard = Oystercard.new
-    oystercard.top_up(80)
-    expect(oystercard.top_up(11)).to eq('Top up limit reached')
+    #oystercard = Oystercard.new
+    subject.top_up(80)
+    expect(subject.top_up(11)).to eq('Top up limit reached')
   end
 
   it "deducts fare from current balance" do
-    oystercard = Oystercard.new
-    oystercard.top_up(40)
-    expect(oystercard.deduct(20)).to eq(20)
+    #oystercard = Oystercard.new
+    subject.top_up(40)
+    expect(subject.deduct(20)).to eq(20)
   end
+
+
+  it "lets oystercard tap in" do
+    #barrier = Barrier.new
+    #oystercard = Oystercard.new
+    expect(subject).to respond_to(:touch_in)
+    subject.touch_in
+    expect(subject.in_journey?).to eq(true)
+  end
+
+  it "lets oystercard tap out" do
+    #barrier = Barrier.new
+    #oystercard = Oystercard.new
+    expect(subject).to respond_to(:touch_out)
+    subject.touch_in
+    subject.touch_out
+    expect(subject.in_journey?).to eq(false)
+
+  end
+
+  it "checks that the user is not on a journey" do
+    expect(subject.in_journey?).to eq(false)
+  end
+
+end
+
+
+
+
+
+describe Barrier do
+
 end
